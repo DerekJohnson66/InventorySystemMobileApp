@@ -27,6 +27,14 @@ import java.util.regex.Pattern;
 public class LoginPage extends AppCompatActivity {
     public static final String EXTRA_USER_ID =
             "com.example.inventorysystem.Activities.EXTRA_USER_ID";
+    public static final String  EXTRA_USERNAME =
+            "com.example.inventorysystem.Activities.EXTRA_USERNAME";
+    public static final String  EXTRA_FIRST_NAME =
+            "com.example.inventorysystem.Activities.EXTRA_FIRST_NAME";
+    public static final String  EXTRA_LAST_NAME =
+            "com.example.inventorysystem.Activities.EXTRA_LAST_NAME";
+    public static final String  EXTRA_PASSWORD =
+            "com.example.inventorysystem.Activities.EXTRA_PASSWORD";
 
     public static final int ADD_USER_REQUEST = 1;
 
@@ -58,11 +66,18 @@ public class LoginPage extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                user = userViewModel.getUserNameAndPassword(editTextUserName.getEditText().getText().toString().trim(), editTextPassword.getEditText().getText().toString().trim());
-                String userName = user.getUserName();
-                String password = user.getPassword();
-                currentUserId = Integer.toString(user.getUserId());
-                confirmInput(userName, password);
+                try {
+                    user = userViewModel.getUserNameAndPassword(editTextUserName.getEditText().getText().toString().trim(), editTextPassword.getEditText().getText().toString().trim());
+                    String userName = user.getUserName();
+                    String password = user.getPassword();
+                    currentUserId = Integer.toString(user.getUserId());
+                    confirmInput(userName, password);
+                }catch (NullPointerException e){
+                    Intent intent = new Intent(LoginPage.this, LoginPage.class);
+                    startActivity(intent);
+                    Toast.makeText(LoginPage.this, "Something went wrong, try again.", Toast.LENGTH_LONG).show();
+                }
+
             }
         });
 
@@ -81,8 +96,6 @@ public class LoginPage extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == ADD_USER_REQUEST && resultCode == RESULT_OK) {
-            String id = data.getStringExtra(AddUser.EXTRA_USER_ID);
-            currentUserId = id;
             String username = data.getStringExtra(AddUser.EXTRA_USERNAME);
             String password = data.getStringExtra(AddUser.EXTRA_PASSWORD);
             String firstName = data.getStringExtra(AddUser.EXTRA_FIRST_NAME);
@@ -123,22 +136,33 @@ public class LoginPage extends AppCompatActivity {
     }
 
     public void confirmInput (String username, String password){
-        if(!validatePassword(password) | !validateUsername(username)){
-            return;
-        }
+        try {
+            if(!validatePassword(password) | !validateUsername(username)){
+                return;
+            }
 
-        if (!username.equals(editTextUserName.getEditText().getText().toString().trim()) && !password.equals(editTextPassword.getEditText().getText().toString().trim())) {
-            Toast.makeText(LoginPage.this, "Could not find that username or password.", Toast.LENGTH_LONG).show();
+            if (!username.equals(editTextUserName.getEditText().getText().toString().trim()) && !password.equals(editTextPassword.getEditText().getText().toString().trim())) {
+                Toast.makeText(LoginPage.this, "Could not find that username or password.", Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(LoginPage.this, LoginPage.class);
+                startActivity(intent);
+            }
+            if (username.equals(editTextUserName.getEditText().getText().toString().trim()) && password.equals(editTextPassword.getEditText().getText().toString().trim())) {
+                Intent intent = new Intent(LoginPage.this, MainActivity.class);
+                intent.putExtra(MainActivity.EXTRA_USER_ID, currentUserId);
+                intent.putExtra(MainActivity.EXTRA_USERNAME, getIntent().getStringExtra(EXTRA_USERNAME));
+                intent.putExtra(MainActivity.EXTRA_FIRST_NAME, getIntent().getStringExtra(EXTRA_FIRST_NAME));
+                intent.putExtra(MainActivity.EXTRA_LAST_NAME, getIntent().getStringExtra(EXTRA_LAST_NAME));
+                intent.putExtra(MainActivity.EXTRA_PASSWORD, getIntent().getStringExtra(EXTRA_PASSWORD));
+                startActivity(intent);
+            } else {
+                Toast.makeText(LoginPage.this, "Try using a different username or password.", Toast.LENGTH_LONG).show();
+            }
+        }catch (Exception e){
             Intent intent = new Intent(LoginPage.this, LoginPage.class);
             startActivity(intent);
+            Toast.makeText(LoginPage.this, "Something went wrong, try again.", Toast.LENGTH_LONG).show();
         }
-        if (username.equals(editTextUserName.getEditText().getText().toString().trim()) && password.equals(editTextPassword.getEditText().getText().toString().trim())) {
-            Intent intent = new Intent(LoginPage.this, MainActivity.class);
 
-            intent.putExtra(MainActivity.EXTRA_USER_ID, currentUserId);
-            startActivity(intent);
-        } else {
-            Toast.makeText(LoginPage.this, "Try using a different username or password.", Toast.LENGTH_LONG).show();
-        }
     }
 }
+

@@ -21,14 +21,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.inventorysystem.Adapters.CategoryAdapter;
 import com.example.inventorysystem.Category;
 import com.example.inventorysystem.R;
+import com.example.inventorysystem.User;
 import com.example.inventorysystem.ViewModels.CategoryViewModel;
 import com.example.inventorysystem.ViewModels.ItemViewModel;
+import com.example.inventorysystem.ViewModels.UserViewModel;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     public static final String  EXTRA_USER_ID =
             "com.example.inventorysystem.Activities.EXTRA_USER_ID";
+    public static final String  EXTRA_USERNAME =
+            "com.example.inventorysystem.Activities.EXTRA_USERNAME";
+    public static final String  EXTRA_FIRST_NAME =
+            "com.example.inventorysystem.Activities.EXTRA_FIRST_NAME";
+    public static final String  EXTRA_LAST_NAME =
+            "com.example.inventorysystem.Activities.EXTRA_LAST_NAME";
+    public static final String  EXTRA_PASSWORD =
+            "com.example.inventorysystem.Activities.EXTRA_PASSWORD";
 
     public static final int ADD_CATEGORY_REQUEST = 1;
     private CategoryViewModel categoryViewModel;
@@ -50,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v){
                 Intent intent = new Intent(MainActivity.this, AddCategory.class);
+                intent.putExtra(MainActivity.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
                 startActivityForResult(intent, ADD_CATEGORY_REQUEST);
             }
         });
@@ -59,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, ReportView.class);
+                intent.putExtra(MainActivity.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
                 startActivity(intent);
             }
         });
@@ -73,7 +85,8 @@ public class MainActivity extends AppCompatActivity {
         itemViewModel = ViewModelProviders.of(this).get(ItemViewModel.class);
         categoryViewModel = ViewModelProviders.of(this).get(CategoryViewModel.class);
 
-        categoryViewModel.getCategoriesByUser(Integer.parseInt(appIntent.getStringExtra(EXTRA_USER_ID))).observe(this, new Observer<List<Category>>() {
+
+        categoryViewModel.getCategoriesByUser(Integer.parseInt(getIntent().getStringExtra(EXTRA_USER_ID))).observe(this, new Observer<List<Category>>() {
             @Override
             public void onChanged(@Nullable List<Category> categories) {
                 adapter.setCategories(categories);
@@ -137,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(requestCode == ADD_CATEGORY_REQUEST && resultCode == RESULT_OK){
             String categoryName = data.getStringExtra(AddCategory.EXTRA_CATEGORY_NAME);
-            int userId = data.getIntExtra(AddCategory.EXTRA_USER_ID,1);
+            int userId = Integer.parseInt(getIntent().getStringExtra(EXTRA_USER_ID));
 
 
             Category category = new Category(categoryName, userId);
@@ -155,7 +168,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu (Menu menu) {
         MenuInflater menuInflater = getMenuInflater();
-        menuInflater.inflate(R.menu.main_menu, menu);
+        menuInflater.inflate(R.menu.main_page_menu, menu);
         return true;
     }
 
@@ -170,6 +183,17 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(MainActivity.this, SearchActivity.class);
                 intent2.putExtra(DetailedCategoryView.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
                 startActivity(intent2);
+                return true;
+            case R.id.view_user:
+                Intent intent3 = new Intent(MainActivity.this, DetailedUserView.class);
+                UserViewModel userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+                User user = userViewModel.getUserById(Integer.parseInt(getIntent().getStringExtra(EXTRA_USER_ID)));
+                intent3.putExtra(DetailedUserView.EXTRA_USER_ID, Integer.toString(user.getUserId()));
+                intent3.putExtra(DetailedUserView.EXTRA_USERNAME, user.getUserName());
+                intent3.putExtra(DetailedUserView.EXTRA_FIRST_NAME, user.getFirstName());
+                intent3.putExtra(DetailedUserView.EXTRA_LAST_NAME, user.getLastName());
+                intent3.putExtra(DetailedUserView.EXTRA_PASSWORD, user.getPassword());
+                startActivity(intent3);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

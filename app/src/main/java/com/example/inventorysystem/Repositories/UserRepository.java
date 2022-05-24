@@ -16,6 +16,7 @@ public class UserRepository {
     private UserDao userDao;
     private LiveData<List<User>> allUsers;
     private User userNameAndPassword;
+    private User currentUser;
 
 
     public UserRepository(Application application){
@@ -40,6 +41,11 @@ public class UserRepository {
     public User getUserNameAndPassword(String userName, String password){
         userNameAndPassword = userDao.getUserNameAndPassword(userName, password);
         return userNameAndPassword;
+    }
+
+    public User getUserById(int userId){
+        currentUser = userDao.getUserById(userId);
+        return currentUser;
     }
 
 

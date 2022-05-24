@@ -18,7 +18,7 @@ import com.example.inventorysystem.InventoryItem;
 import com.example.inventorysystem.Note;
 import com.example.inventorysystem.User;
 
-@Database(entities = {User.class, InventoryItem.class, Note.class, Category.class}, version = 7)
+@Database(entities = {User.class, InventoryItem.class, Note.class, Category.class}, version = 9)
 public abstract class AppDatabase extends RoomDatabase{
 
         private static AppDatabase instance;
@@ -68,9 +68,9 @@ public abstract class AppDatabase extends RoomDatabase{
                 userDao.insert(new User("user2", "First 2", "Last 2", "password2"));
                 userDao.insert(new User("user3", "First 3", "Last 3", "password3"));
 
-                inventoryItemDao.insert(new InventoryItem("Item 1", "description 1", 6, 12, 50, 1, 1, "Category 1"));
-                inventoryItemDao.insert(new InventoryItem("Item 2", "description 2", 6, 12, 50, 1, 2, "Category 2"));
-                inventoryItemDao.insert(new InventoryItem("Item 3", "description 3", 6, 12, 50, 1, 3, "Category 3"));
+                inventoryItemDao.insert(new InventoryItem("Item 1", "description 1", 6, 12, 50, 1, 1, "Category 1", 1));
+                inventoryItemDao.insert(new InventoryItem("Item 2", "description 2", 6, 12, 50, 1, 2, "Category 2", 2));
+                inventoryItemDao.insert(new InventoryItem("Item 3", "description 3", 6, 12, 50, 1, 3, "Category 3", 3));
 
                 noteDao.insert(new Note("Note 1", 1));
                 noteDao.insert(new Note("Note 2", 2));

@@ -16,6 +16,7 @@ public class UserViewModel extends AndroidViewModel {
         private UserRepository repository;
         private LiveData<List<User>> allUsers;
         private User userNameAndPassword;
+        private User currentUser;
 
         public UserViewModel(@NonNull Application application) {
             super(application);
@@ -37,6 +38,11 @@ public class UserViewModel extends AndroidViewModel {
 
         public LiveData<List<User>> getAllUsers(){
             return (LiveData<List<User>>) allUsers;
+        }
+
+        public User getUserById(int userId){
+            currentUser = repository.getUserById(userId);
+            return currentUser;
         }
 
     public User getUserNameAndPassword(String userName, String password){
