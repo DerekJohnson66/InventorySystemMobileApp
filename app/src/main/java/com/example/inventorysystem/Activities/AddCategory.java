@@ -79,11 +79,12 @@ public class AddCategory extends AppCompatActivity {
                 Toast.makeText(this, "Please fill out the category name.", Toast.LENGTH_LONG).show();
                 return;
             }
-
+            String tempId = getIntent().getStringExtra(EXTRA_USER_ID);
             Intent data = new Intent();
             data.putExtra(EXTRA_CATEGORY_NAME, categoryName);
             data.putExtra(EXTRA_CATEGORY_ID, -1);
-            data.putExtra(AddCategory.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
+            data.putExtra(MainActivity.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
+
 
             setResult(RESULT_OK, data);
             finish();
@@ -130,16 +131,23 @@ public class AddCategory extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()){
-            case R.id.main_page:
-                Intent intent = new Intent(AddCategory.this, MainActivity.class);
-                startActivity(intent);
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
 
-    }
+        @Override
+        public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+            switch (item.getItemId()){
+                case R.id.main_page:
+                    Intent intent = new Intent(AddCategory.this, MainActivity.class);
+                    startActivity(intent);
+                    return true;
+                case R.id.search_page:
+                    Intent intent2 = new Intent(AddCategory.this, SearchActivity.class);
+                    intent2.putExtra(DetailedCategoryView.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
+                    startActivity(intent2);
+                    return true;
+
+                default:
+                    return super.onOptionsItemSelected(item);
+            }
+
+        }
 }

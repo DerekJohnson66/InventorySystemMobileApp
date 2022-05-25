@@ -197,8 +197,9 @@ public class DetailedItemView extends AppCompatActivity {
 
             int categoryId = Integer.parseInt(getIntent().getStringExtra(EXTRA_CATEGORY_ID));
             String categoryName = getIntent().getStringExtra(EXTRA_CATEGORY_NAME);
+            int userId = Integer.parseInt(getIntent().getStringExtra(EXTRA_USER_ID));
 
-            InventoryItem inventoryItem = new InventoryItem(title, description, currentAmount, targetAmount, maxAmount, minAmount, categoryId, categoryName);
+            InventoryItem inventoryItem = new InventoryItem(title, description, currentAmount, targetAmount, maxAmount, minAmount, categoryId, categoryName, userId);
             inventoryItem.setItemId(id);
             itemViewModel.update(inventoryItem);
 
@@ -234,6 +235,7 @@ public class DetailedItemView extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -241,6 +243,12 @@ public class DetailedItemView extends AppCompatActivity {
                 Intent intent = new Intent(DetailedItemView.this, MainActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.search_page:
+                Intent intent2 = new Intent(DetailedItemView.this, SearchActivity.class);
+                intent2.putExtra(DetailedCategoryView.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
+                startActivity(intent2);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

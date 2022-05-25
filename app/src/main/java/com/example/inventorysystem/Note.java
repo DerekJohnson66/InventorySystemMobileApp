@@ -2,9 +2,13 @@ package com.example.inventorysystem;
 
 import androidx.room.ColumnInfo;
 import androidx.room.Entity;
+import androidx.room.ForeignKey;
 import androidx.room.PrimaryKey;
 
-@Entity(tableName = "note_table")
+@Entity(tableName = "note_table", foreignKeys = @ForeignKey(entity = InventoryItem.class,
+        parentColumns = "itemId",
+        childColumns =  "iId",
+        onDelete = 5))
 public class Note {
 
     @ColumnInfo(name = "noteId")

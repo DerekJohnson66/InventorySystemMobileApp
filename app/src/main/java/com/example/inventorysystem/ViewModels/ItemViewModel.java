@@ -43,8 +43,8 @@ public class ItemViewModel extends AndroidViewModel {
         return itemsByCategory;
     }
 
-    public List<InventoryItem> getAllItemsNeedFilling(){
-        allItemsNeedFilling = repository.getAllItemsNeedFilling();
+    public List<InventoryItem> getAllItemsNeedFilling(int userId){
+        allItemsNeedFilling = repository.getAllItemsNeedFilling(userId);
         return allItemsNeedFilling;
     }
 

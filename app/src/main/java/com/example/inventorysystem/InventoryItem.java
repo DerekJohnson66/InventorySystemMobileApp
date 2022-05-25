@@ -31,6 +31,9 @@ public class InventoryItem {
     @ColumnInfo(name = "cId")
     private int categoryId;
 
+    @ColumnInfo(name = "uId")
+    private int userId;
+
 //    @Ignore
     private String categoryName;
 
@@ -44,7 +47,7 @@ public class InventoryItem {
 //        this.categoryId = categoryId;
 //    }
 
-    public InventoryItem(String title, String description, int currentAmount, int targetAmount, int maxAmount, int minAmount, int categoryId, String categoryName) {
+    public InventoryItem(String title, String description, int currentAmount, int targetAmount, int maxAmount, int minAmount, int categoryId, String categoryName, int userId) {
         this.title = title;
         this.description = description;
         this.currentAmount = currentAmount;
@@ -53,6 +56,7 @@ public class InventoryItem {
         this.minAmount = minAmount;
         this.categoryId = categoryId;
         this.categoryName = categoryName;
+        this.userId = userId;
     }
 
     public String getCategoryName() {
@@ -61,6 +65,10 @@ public class InventoryItem {
 
     public int getCategoryId() {
         return categoryId;
+    }
+
+    public int getUserId() {
+        return userId;
     }
 
     public int getItemId() {
@@ -93,6 +101,10 @@ public class InventoryItem {
 
     public void setCategoryId(int userId) {
         this.categoryId = categoryId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
     }
 
     public void setItemId(int id){

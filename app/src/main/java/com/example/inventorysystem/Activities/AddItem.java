@@ -106,8 +106,18 @@ public class AddItem extends AppCompatActivity {
 
     private void saveItem(){
         try {
+
+
             String title = editItemTitle.getText().toString();
             String description = editItemDescription.getText().toString();
+            String checkCurrentAmount = editItemCurrentAmount.getText().toString();
+            String checkTargetAmount = editItemTargetAmount.getText().toString();
+            String checkMaxAmount = editItemMaxAmount.getText().toString();
+            String checkMinAmount = editItemMinAmount.getText().toString();
+            if(title.trim().isEmpty() || description.trim().isEmpty() || checkCurrentAmount.trim().isEmpty() || checkTargetAmount.trim().isEmpty() || checkMaxAmount.trim().isEmpty() || checkMinAmount.trim().isEmpty()){
+                Toast.makeText(this, "Please fill all fields.", Toast.LENGTH_LONG).show();
+                return;
+            }
             int currentAmount = Integer.parseInt(editItemCurrentAmount.getText().toString());
             int targetAmount = Integer.parseInt(editItemTargetAmount.getText().toString());
             int maxAmount = Integer.parseInt(editItemMaxAmount.getText().toString());
@@ -115,10 +125,6 @@ public class AddItem extends AppCompatActivity {
             String categoryName = getIntent().getStringExtra(EXTRA_CATEGORY_NAME);
 
 
-            if(title.trim().isEmpty() || description.trim().isEmpty()){
-                Toast.makeText(this, "Please fill all fields.", Toast.LENGTH_LONG).show();
-                return;
-            }
 
             Intent data = new Intent();
             data.putExtra(EXTRA_ITEM_TITLE, title);
@@ -127,7 +133,7 @@ public class AddItem extends AppCompatActivity {
             data.putExtra(EXTRA_ITEM_TARGET_AMOUNT, targetAmount);
             data.putExtra(EXTRA_ITEM_MAX_AMOUNT, maxAmount);
             data.putExtra(EXTRA_ITEM_MIN_AMOUNT, minAmount);
-            data.putExtra(EXTRA_CATEGORY_ID, -1);
+            data.putExtra(EXTRA_CATEGORY_ID, getIntent().getStringExtra(EXTRA_CATEGORY_ID));
             data.putExtra(AddItem.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
 
 
@@ -148,15 +154,20 @@ public class AddItem extends AppCompatActivity {
             int categoryId = Integer.parseInt(getIntent().getStringExtra(EXTRA_CATEGORY_ID));
             String title = editItemTitle.getText().toString();
             String description = editItemDescription.getText().toString();
-            String currentAmount = editItemCurrentAmount.getText().toString();
-            String targetAmount = editItemTargetAmount.getText().toString();
-            String maxAmount = editItemMaxAmount.getText().toString();
-            String minAmount = editItemMinAmount.getText().toString();
-
-            if(title.trim().isEmpty() || description.trim().isEmpty() || currentAmount.trim().isEmpty() || targetAmount.trim().isEmpty() || maxAmount.trim().isEmpty() || minAmount.trim().isEmpty()){
+            String checkCurrentAmount = editItemCurrentAmount.getText().toString();
+            String checkTargetAmount = editItemTargetAmount.getText().toString();
+            String checkMaxAmount = editItemMaxAmount.getText().toString();
+            String checkMinAmount = editItemMinAmount.getText().toString();
+            if(title.trim().isEmpty() || description.trim().isEmpty() || checkCurrentAmount.trim().isEmpty() || checkTargetAmount.trim().isEmpty() || checkMaxAmount.trim().isEmpty() || checkMinAmount.trim().isEmpty()){
                 Toast.makeText(this, "Please fill out all fields.", Toast.LENGTH_LONG).show();
                 return;
             }
+            int currentAmount = Integer.parseInt(editItemCurrentAmount.getText().toString());
+            int targetAmount = Integer.parseInt(editItemTargetAmount.getText().toString());
+            int maxAmount = Integer.parseInt(editItemMaxAmount.getText().toString());
+            int minAmount = Integer.parseInt(editItemMinAmount.getText().toString());
+
+
 
             Intent data = new Intent();
             data.putExtra(EXTRA_ITEM_ID, id);
@@ -186,6 +197,7 @@ public class AddItem extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -193,6 +205,12 @@ public class AddItem extends AppCompatActivity {
                 Intent intent = new Intent(AddItem.this, MainActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.search_page:
+                Intent intent2 = new Intent(AddItem.this, SearchActivity.class);
+                intent2.putExtra(DetailedCategoryView.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
+                startActivity(intent2);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

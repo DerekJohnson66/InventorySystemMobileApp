@@ -33,15 +33,14 @@ import java.util.List;
 public class DetailedUserView  extends AppCompatActivity {
     public static final String  EXTRA_USER_ID =
             "com.example.inventorysystem.Activities.EXTRA_USER_ID";
-    public static final String  EXTRA_USER_USERNAME =
-            "com.example.inventorysystem.Activities.EXTRA_USER_USERNAME";
-    public static final String  EXTRA_USER_PASSWORD =
-            "com.example.inventorysystem.Activities.EXTRA_USER_PASSWORD";
-    public static final String  EXTRA_USER_FIRST_NAME =
-            "com.example.inventorysystem.Activities.EXTRA_USER_FIRST_NAME";
-    public static final String  EXTRA_USER_LAST_NAME =
-            "com.example.inventorysystem.Activities.EXTRA_USER_LAST_NAME";
-
+    public static final String  EXTRA_USERNAME =
+            "com.example.inventorysystem.Activities.EXTRA_USERNAME";
+    public static final String  EXTRA_FIRST_NAME =
+            "com.example.inventorysystem.Activities.EXTRA_FIRST_NAME";
+    public static final String  EXTRA_LAST_NAME =
+            "com.example.inventorysystem.Activities.EXTRA_LAST_NAME";
+    public static final String  EXTRA_PASSWORD =
+            "com.example.inventorysystem.Activities.EXTRA_PASSWORD";
     private TextView detailedUserName;
     private TextView detailedPassword;
     private TextView detailedFirstName;
@@ -66,10 +65,12 @@ public class DetailedUserView  extends AppCompatActivity {
         detailedFirstName = findViewById(R.id.d_user_view_first_name);
         detailedLastName = findViewById(R.id.d_user_view_last_name);
 
-        detailedUserName.setText(getIntent().getStringExtra(EXTRA_USER_USERNAME));
-        detailedPassword.setText(getIntent().getStringExtra(EXTRA_USER_PASSWORD));
-        detailedFirstName.setText(getIntent().getStringExtra(EXTRA_USER_FIRST_NAME));
-        detailedLastName.setText(getIntent().getStringExtra(EXTRA_USER_LAST_NAME));
+        userViewModel = ViewModelProviders.of(this).get(UserViewModel.class);
+
+        detailedUserName.setText(getIntent().getStringExtra(EXTRA_USERNAME));
+        detailedPassword.setText(getIntent().getStringExtra(EXTRA_PASSWORD));
+        detailedFirstName.setText(getIntent().getStringExtra(EXTRA_FIRST_NAME));
+        detailedLastName.setText(getIntent().getStringExtra(EXTRA_LAST_NAME));
 
         Button editUserButton = findViewById(R.id.d_user_view_update_button);
         editUserButton.setOnClickListener(new View.OnClickListener() {
@@ -78,10 +79,10 @@ public class DetailedUserView  extends AppCompatActivity {
                 Intent intent = new Intent(DetailedUserView.this, AddUser.class);
 
                 intent.putExtra(DetailedUserView.EXTRA_USER_ID, pageIntent.getStringExtra(EXTRA_USER_ID));
-                intent.putExtra(DetailedUserView.EXTRA_USER_USERNAME, pageIntent.getStringExtra(EXTRA_USER_USERNAME));
-                intent.putExtra(DetailedUserView.EXTRA_USER_PASSWORD, pageIntent.getStringExtra(EXTRA_USER_PASSWORD));
-                intent.putExtra(DetailedUserView.EXTRA_USER_FIRST_NAME, pageIntent.getStringExtra(EXTRA_USER_FIRST_NAME));
-                intent.putExtra(DetailedUserView.EXTRA_USER_LAST_NAME, pageIntent.getStringExtra(EXTRA_USER_LAST_NAME));
+                intent.putExtra(DetailedUserView.EXTRA_USERNAME, pageIntent.getStringExtra(EXTRA_USERNAME));
+                intent.putExtra(DetailedUserView.EXTRA_PASSWORD, pageIntent.getStringExtra(EXTRA_PASSWORD));
+                intent.putExtra(DetailedUserView.EXTRA_FIRST_NAME, pageIntent.getStringExtra(EXTRA_FIRST_NAME));
+                intent.putExtra(DetailedUserView.EXTRA_LAST_NAME, pageIntent.getStringExtra(EXTRA_LAST_NAME));
 
                 startActivityForResult(intent, EDIT_USER_REQUEST);
             }
@@ -114,7 +115,11 @@ public class DetailedUserView  extends AppCompatActivity {
             Toast.makeText(this, "User Updated", Toast.LENGTH_SHORT).show();
 
             Intent intent = new Intent(DetailedUserView.this, MainActivity.class);
-            intent.putExtra(DetailedCategoryView.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
+            intent.putExtra(MainActivity.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
+            intent.putExtra(MainActivity.EXTRA_USERNAME, getIntent().getStringExtra(EXTRA_USERNAME));
+            intent.putExtra(MainActivity.EXTRA_FIRST_NAME, getIntent().getStringExtra(EXTRA_FIRST_NAME));
+            intent.putExtra(MainActivity.EXTRA_LAST_NAME, getIntent().getStringExtra(EXTRA_LAST_NAME));
+            intent.putExtra(MainActivity.EXTRA_PASSWORD, getIntent().getStringExtra(EXTRA_PASSWORD));
             startActivity(intent);
         }
         if(requestCode == EDIT_USER_REQUEST && resultCode != RESULT_OK){
@@ -129,6 +134,7 @@ public class DetailedUserView  extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -136,6 +142,12 @@ public class DetailedUserView  extends AppCompatActivity {
                 Intent intent = new Intent(DetailedUserView.this, MainActivity.class);
                 startActivity(intent);
                 return true;
+            case R.id.search_page:
+                Intent intent2 = new Intent(DetailedUserView.this, SearchActivity.class);
+                intent2.putExtra(DetailedCategoryView.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
+                startActivity(intent2);
+                return true;
+
             default:
                 return super.onOptionsItemSelected(item);
         }

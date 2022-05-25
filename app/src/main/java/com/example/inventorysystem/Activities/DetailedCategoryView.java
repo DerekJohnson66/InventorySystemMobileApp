@@ -71,7 +71,7 @@ public class DetailedCategoryView extends AppCompatActivity {
 
                 intent.putExtra(DetailedCategoryView.EXTRA_USER_ID, pageIntent.getStringExtra(EXTRA_USER_ID));
                 intent.putExtra(DetailedCategoryView.EXTRA_CATEGORY_NAME, pageIntent.getStringExtra(EXTRA_CATEGORY_NAME));
-
+                intent.putExtra(DetailedCategoryView.EXTRA_CATEGORY_ID, pageIntent.getStringExtra(EXTRA_CATEGORY_ID));
                 startActivityForResult(intent, ADD_ITEM_REQUEST);
 
             }
@@ -189,8 +189,9 @@ public class DetailedCategoryView extends AppCompatActivity {
 
             int categoryId = Integer.parseInt(getIntent().getStringExtra(EXTRA_CATEGORY_ID));
             String categoryName = data.getStringExtra(AddItem.EXTRA_CATEGORY_NAME);
+            int userId = Integer.parseInt(getIntent().getStringExtra(EXTRA_USER_ID));
 
-            InventoryItem inventoryItem = new InventoryItem(title, description, currentAmount, targetAmount, maxAmount, minAmount, categoryId, categoryName);
+            InventoryItem inventoryItem = new InventoryItem(title, description, currentAmount, targetAmount, maxAmount, minAmount, categoryId, categoryName, userId);
             itemViewModel.insert(inventoryItem);
 
             Toast.makeText(this, "Item Added", Toast.LENGTH_SHORT).show();
@@ -213,6 +214,7 @@ public class DetailedCategoryView extends AppCompatActivity {
         return true;
     }
 
+
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()){
@@ -222,9 +224,7 @@ public class DetailedCategoryView extends AppCompatActivity {
                 return true;
             case R.id.search_page:
                 Intent intent2 = new Intent(DetailedCategoryView.this, SearchActivity.class);
-                intent2.putExtra(DetailedCategoryView.EXTRA_CATEGORY_NAME, getIntent().getStringExtra(EXTRA_CATEGORY_NAME));
                 intent2.putExtra(DetailedCategoryView.EXTRA_USER_ID, getIntent().getStringExtra(EXTRA_USER_ID));
-                intent2.putExtra(DetailedCategoryView.EXTRA_CATEGORY_ID, getIntent().getStringExtra(EXTRA_CATEGORY_ID));
                 startActivity(intent2);
                 return true;
 

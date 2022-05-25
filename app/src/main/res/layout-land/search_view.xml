@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <com.mancj.materialsearchbar.MaterialSearchBar
+        android:id="@+id/search_bar"
+        android:layout_alignParentTop="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:mt_speechMode="false"
+        app:mt_hint="Search"/>
+
+    <TextView
+        android:id="@+id/text_search_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="16sp"
+        android:text="Search by Item"
+        android:layout_below="@id/search_bar"
+        android:layout_margin="5dp"
+        />
+
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/search_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="490dp"
+        android:layout_below="@id/text_search_title"
+        app:layout_anchor="@id/search_recycler_view"
+        app:layout_anchorGravity="center"
+        tools:listitem="@layout/inventory_item_item" />
+
+</RelativeLayout>

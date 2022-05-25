@@ -11,6 +11,9 @@
         android:id="@+id/main_page"
         android:title="Go to Main Page"
         app:showAsAction="never" />
-
+    <item
+        android:id="@+id/view_user"
+        android:title="View User"
+        app:showAsAction="never" />
 
 </menu>

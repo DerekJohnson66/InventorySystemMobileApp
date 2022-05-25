@@ -61,8 +61,8 @@ public class InventoryItemRepository {
             return count;
         }
 
-        public List<InventoryItem> getAllItemsNeedFilling(){
-            allItemsNeedFilling = inventoryItemDao.getAllItemsNeedFilling();
+        public List<InventoryItem> getAllItemsNeedFilling(int userId){
+            allItemsNeedFilling = inventoryItemDao.getAllItemsNeedFilling(userId);
             return allItemsNeedFilling;
         }
 
